@@ -6,6 +6,7 @@ import com.alibaba.excel.metadata.ExcelHeadProperty;
 import com.alibaba.excel.metadata.Sheet;
 import com.alibaba.excel.support.ExcelTypeEnum;
 
+import java.io.File;
 import java.io.InputStream;
 import java.util.List;
 
@@ -46,6 +47,12 @@ public interface AnalysisContext {
      * @return file io
      */
     InputStream getInputStream();
+
+    /**
+     * get fil
+     * @return file
+     */
+    File getFile();
 
     /**
      *

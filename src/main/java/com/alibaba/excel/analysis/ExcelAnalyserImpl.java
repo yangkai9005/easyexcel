@@ -10,6 +10,7 @@ import com.alibaba.excel.metadata.Sheet;
 import com.alibaba.excel.modelbuild.ModelBuildEventListener;
 import com.alibaba.excel.support.ExcelTypeEnum;
 
+import java.io.File;
 import java.io.InputStream;
 import java.util.List;
 
@@ -23,9 +24,15 @@ public class ExcelAnalyserImpl implements ExcelAnalyser {
     private BaseSaxAnalyser saxAnalyser;
 
     public ExcelAnalyserImpl(InputStream inputStream, ExcelTypeEnum excelTypeEnum, Object custom,
-                             AnalysisEventListener eventListener, boolean trim) {
+                              AnalysisEventListener eventListener, boolean trim) {
         analysisContext = new AnalysisContextImpl(inputStream, excelTypeEnum, custom,
-            eventListener, trim);
+                eventListener, trim);
+    }
+
+    public ExcelAnalyserImpl(File file, ExcelTypeEnum excelTypeEnum, Object custom,
+                             AnalysisEventListener eventListener, boolean trim) {
+        analysisContext = new AnalysisContextImpl(file, excelTypeEnum, custom,
+                eventListener, trim);
     }
 
     private BaseSaxAnalyser getSaxAnalyser() {

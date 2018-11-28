@@ -9,6 +9,7 @@ import com.alibaba.excel.metadata.Sheet;
 import com.alibaba.excel.parameter.AnalysisParam;
 import com.alibaba.excel.support.ExcelTypeEnum;
 
+import java.io.File;
 import java.io.InputStream;
 import java.util.List;
 
@@ -48,6 +49,11 @@ public class ExcelReader {
     public ExcelReader(InputStream in, Object customContent,
                        AnalysisEventListener eventListener) {
         this(in, customContent, eventListener, true);
+    }
+
+    public ExcelReader(File file, Object customContent,
+                       AnalysisEventListener eventListener) {
+        this(file, customContent, eventListener, true);
     }
 
     /**
@@ -94,6 +100,17 @@ public class ExcelReader {
         ExcelTypeEnum excelTypeEnum = ExcelTypeEnum.valueOf(in);
         validateParam(in, eventListener);
         analyser =new ExcelAnalyserImpl(in, excelTypeEnum, customContent, eventListener, trim);
+    }
+
+    public ExcelReader(File file, Object customContent,
+                       AnalysisEventListener eventListener, boolean trim) {
+        ExcelTypeEnum excelTypeEnum = ExcelTypeEnum.XLS;
+        if(file.getName().endsWith(ExcelTypeEnum.XLSX.getValue())){
+            excelTypeEnum = ExcelTypeEnum.XLSX;
+        }
+
+        validateParam(file, eventListener);
+        analyser =new ExcelAnalyserImpl(file, excelTypeEnum, customContent, eventListener, trim);
     }
 
     /**
@@ -144,6 +161,13 @@ public class ExcelReader {
             throw new IllegalArgumentException("AnalysisEventListener can not null");
         } else if (in == null) {
             throw new IllegalArgumentException("InputStream can not null");
+        }
+    }
+    private void validateParam(File file,  AnalysisEventListener eventListener) {
+        if (eventListener == null) {
+            throw new IllegalArgumentException("AnalysisEventListener can not null");
+        } else if (file == null) {
+            throw new IllegalArgumentException("file can not null");
         }
     }
 }

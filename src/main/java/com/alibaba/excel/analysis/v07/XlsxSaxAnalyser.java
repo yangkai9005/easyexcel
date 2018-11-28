@@ -18,6 +18,7 @@ import org.xml.sax.XMLReader;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -41,7 +42,14 @@ public class XlsxSaxAnalyser extends BaseSaxAnalyser {
         this.analysisContext = analysisContext;
 
         analysisContext.setCurrentRowNum(0);
-        this.xssfReader = new XSSFReader(OPCPackage.open(analysisContext.getInputStream()));
+        if(analysisContext.getInputStream() != null){
+            this.xssfReader = new XSSFReader(OPCPackage.open(analysisContext.getInputStream()));
+        }
+
+        if(analysisContext.getFile() != null){
+            this.xssfReader = new XSSFReader(OPCPackage.open(analysisContext.getFile()));
+        }
+
         this.sharedStringsTable = this.xssfReader.getSharedStringsTable();
 
         InputStream workbookXml = xssfReader.getWorkbookData();

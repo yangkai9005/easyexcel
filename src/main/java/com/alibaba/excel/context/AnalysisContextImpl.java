@@ -7,6 +7,7 @@ import com.alibaba.excel.metadata.ExcelHeadProperty;
 import com.alibaba.excel.metadata.Sheet;
 import com.alibaba.excel.support.ExcelTypeEnum;
 
+import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +25,8 @@ public class AnalysisContextImpl implements AnalysisContext {
     private ExcelTypeEnum excelType;
 
     private InputStream inputStream;
+
+    private File file;
 
     private AnalysisEventListener eventListener;
 
@@ -73,6 +76,15 @@ public class AnalysisContextImpl implements AnalysisContext {
         this.trim = trim;
     }
 
+    public AnalysisContextImpl(File file, ExcelTypeEnum excelTypeEnum, Object custom,
+                               AnalysisEventListener listener, boolean trim) {
+        this.custom = custom;
+        this.eventListener = listener;
+        this.file = file;
+        this.excelType = excelTypeEnum;
+        this.trim = trim;
+    }
+
     @Override
     public void setCurrentSheet(Sheet currentSheet) {
         cleanCurrentSheet();
@@ -115,6 +127,11 @@ public class AnalysisContextImpl implements AnalysisContext {
     @Override
     public InputStream getInputStream() {
         return inputStream;
+    }
+
+    @Override
+    public File getFile() {
+        return file;
     }
 
     public void setInputStream(InputStream inputStream) {

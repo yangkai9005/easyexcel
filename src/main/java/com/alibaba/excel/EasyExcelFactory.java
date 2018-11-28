@@ -5,6 +5,7 @@ import com.alibaba.excel.event.AnalysisEventListener;
 import com.alibaba.excel.metadata.Sheet;
 import com.alibaba.excel.support.ExcelTypeEnum;
 
+import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -39,6 +40,21 @@ public class EasyExcelFactory {
         return rows;
     }
 
+    public static List<Object> read(File file, Sheet sheet) {
+        final List<Object> rows = new ArrayList<Object>();
+        new ExcelReader(file, null, new AnalysisEventListener() {
+            @Override
+            public void invoke(Object object, AnalysisContext context) {
+                rows.add(object);
+            }
+
+            @Override
+            public void doAfterAllAnalysed(AnalysisContext context) {
+            }
+        }, false).read(sheet);
+        return rows;
+    }
+
     /**
      * Parsing large file
      *
@@ -48,6 +64,9 @@ public class EasyExcelFactory {
      */
     public static void readBySax(InputStream in, Sheet sheet, AnalysisEventListener listener) {
         new ExcelReader(in, null, listener).read(sheet);
+    }
+    public static void readBySax(File file, Sheet sheet, AnalysisEventListener listener) {
+        new ExcelReader(file, null, listener).read(sheet);
     }
 
     /**
@@ -59,6 +78,10 @@ public class EasyExcelFactory {
      */
     public static ExcelReader getReader(InputStream in, AnalysisEventListener listener) {
         return new ExcelReader(in, null, listener);
+    }
+
+    public static ExcelReader getReader(File file, AnalysisEventListener listener) {
+        return new ExcelReader(file, null, listener);
     }
 
     /**
